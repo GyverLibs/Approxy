@@ -1,3 +1,5 @@
+This is an automatic translation, may be incorrect in some places. See sources and examples!
+
 # Approxy
 Linear Approximator
 - Approximates the table to get intermediate results
