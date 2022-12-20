@@ -146,6 +146,7 @@ void loop() {
 <a id="versions"></a>
 ## Версии
 - v1.0
+- v1.1 - исправлен баг в Approxy2D в режиме RAM
 
 <a id="feedback"></a>
 ## Баги и обратная связь

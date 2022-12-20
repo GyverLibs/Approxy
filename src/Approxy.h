@@ -13,6 +13,7 @@
 
     Версии:
     v1.0 - релиз
+    v1.1 - исправлен баг в Approxy2D в режиме RAM
 */
 
 #ifndef _Approxy_h
@@ -86,7 +87,7 @@ private:
             if (sizeof(TXY) == 1) return (TXY)pgm_read_byte(&xy[num][1]);
             else if (sizeof(TXY) == 2) return (TXY)pgm_read_word(&xy[num][1]);
             else return (TXY)pgm_read_dword(&xy[num][1]);
-        } else return xy[num][0];
+        } else return xy[num][1];
     }
     TXY (*xy)[2];
     const uint16_t _size;
