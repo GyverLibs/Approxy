@@ -1,6 +1,5 @@
 [![latest](https://img.shields.io/github/v/release/GyverLibs/Approxy.svg?color=brightgreen)](https://github.com/GyverLibs/Approxy/releases/latest/download/Approxy.zip)
 [![PIO](https://badges.registry.platformio.org/packages/gyverlibs/library/Approxy.svg)](https://registry.platformio.org/libraries/gyverlibs/Approxy)
-[![arduino-library](https://www.ardu-badge.com/badge/Approxy.svg?)](https://www.ardu-badge.com/Approxy)
 [![PIO](https://badges.registry.platformio.org/packages/gyverlibs/library/Approxy.svg)](https://registry.platformio.org/libraries/gyverlibs/Approxy)
 [![arduino-library](https://www.ardu-badge.com/badge/Approxy.svg?)](https://www.ardu-badge.com/Approxy)
 [![Foo](https://img.shields.io/badge/Website-AlexGyver.ru-blue.svg?style=flat-square)](https://alexgyver.ru/)
