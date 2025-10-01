@@ -36,6 +36,7 @@ public:
         for (int i = 0; i < _size - 1; i++) {   // поиск
             if (X(i + 1) > val) return (float)(val - X(i)) * (Y(i + 1) - Y(i)) / (X(i + 1) - X(i)) + Y(i);
         }
+        return Y(_size - 1);
     }
 
 private:
@@ -72,6 +73,7 @@ public:
         for (int i = 0; i < _size - 1; i++) {   // поиск
             if (X(i + 1) > val) return (float)(val - X(i)) * (Y(i + 1) - Y(i)) / (X(i + 1) - X(i)) + Y(i);
         }
+        return Y(_size - 1);
     }
 
 private:
