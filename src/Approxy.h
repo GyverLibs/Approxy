@@ -19,79 +19,90 @@
 #ifndef _Approxy_h
 #define _Approxy_h
 
+#include <Arduino.h>
+
 #define AP_PGM 1
+
+namespace approxy {
+
+template <typename T, bool MODE>
+T read(const T* ptr) {
+    if (MODE) {
+        T value;
+        memcpy_P(&value, ptr, sizeof(T));
+        return value;
+    }
+    return *ptr;
+}
+
+}  // namespace approxy
 
 // одномерный массив
 template <typename TX, typename TY, bool MODE = 0>
 class Approxy {
-public:
-    Approxy(TX* nx, TY* ny, uint16_t size) : _size(size) {
-        x = nx;
-        y = ny;
-    }
+   public:
+    Approxy(const TX* nx, const TY* ny, uint16_t size) : x(nx), y(ny), _size(size) {}
 
     float get(float val) {
-        if (val < X(0)) return Y(0);          // вышли слева
-        else if (val >= X(_size - 1)) return Y(_size - 1);  // вышли справа
-        for (int i = 0; i < _size - 1; i++) {   // поиск
-            if (X(i + 1) > val) return (float)(val - X(i)) * (Y(i + 1) - Y(i)) / (X(i + 1) - X(i)) + Y(i);
+        if (!_size || !x || !y) return 0;
+        if (val < X(0)) return Y(0);                         // вышли слева
+        if (val >= X(_size - 1)) return Y(_size - 1);        // вышли справа
+        for (uint16_t i = 0; i < _size - 1; i++) {           // поиск
+            float x1 = X(i + 1);
+            if (x1 > val) {
+                float x0 = X(i);
+                float y0 = Y(i);
+                float y1 = Y(i + 1);
+                return (val - x0) * (y1 - y0) / (x1 - x0) + y0;
+            }
         }
         return Y(_size - 1);
     }
 
-private:
-    TX X(int num) {
-        if (MODE) {
-            if (sizeof(TX) == 1) return (TX)pgm_read_byte(&x[num]);
-            else if (sizeof(TX) == 2) return (TX)pgm_read_word(&x[num]);
-            else return (TX)pgm_read_dword(&x[num]);
-        } else return x[num];
+   private:
+    TX X(uint16_t num) {
+        return approxy::read<TX, MODE>(&x[num]);
     }
-    TY Y(int num) {
-        if (MODE) {
-            if (sizeof(TY) == 1) return (TY)pgm_read_byte(&y[num]);
-            else if (sizeof(TY) == 2) return (TY)pgm_read_word(&y[num]);
-            else return (TY)pgm_read_dword(&y[num]);
-        } else return y[num];
+    TY Y(uint16_t num) {
+        return approxy::read<TY, MODE>(&y[num]);
     }
-    TX* x;
-    TY* y;
+
+    const TX* x;
+    const TY* y;
     const uint16_t _size;
 };
 
 // двумерный массив
 template <typename TXY, bool MODE = 0>
 class Approxy2D {
-public:
-    Approxy2D(TXY nxy[][2], uint16_t size) : _size(size) {
-        xy = nxy;
-    }
+   public:
+    Approxy2D(const TXY nxy[][2], uint16_t size) : xy(nxy), _size(size) {}
 
     float get(float val) {
-        if (val < X(0)) return Y(0);          // вышли слева
-        else if (val >= X(_size - 1)) return Y(_size - 1);  // вышли справа
-        for (int i = 0; i < _size - 1; i++) {   // поиск
-            if (X(i + 1) > val) return (float)(val - X(i)) * (Y(i + 1) - Y(i)) / (X(i + 1) - X(i)) + Y(i);
+        if (!_size || !xy) return 0;
+        if (val < X(0)) return Y(0);                         // вышли слева
+        if (val >= X(_size - 1)) return Y(_size - 1);        // вышли справа
+        for (uint16_t i = 0; i < _size - 1; i++) {           // поиск
+            float x1 = X(i + 1);
+            if (x1 > val) {
+                float x0 = X(i);
+                float y0 = Y(i);
+                float y1 = Y(i + 1);
+                return (val - x0) * (y1 - y0) / (x1 - x0) + y0;
+            }
         }
         return Y(_size - 1);
     }
 
-private:
-    TXY X(int num) {
-        if (MODE) {
-            if (sizeof(TXY) == 1) return (TXY)pgm_read_byte(&xy[num][0]);
-            else if (sizeof(TXY) == 2) return (TXY)pgm_read_word(&xy[num][0]);
-            else return (TXY)pgm_read_dword(&xy[num][0]);
-        } else return xy[num][0];
+   private:
+    TXY X(uint16_t num) {
+        return approxy::read<TXY, MODE>(&xy[num][0]);
     }
-    TXY Y(int num) {
-        if (MODE) {
-            if (sizeof(TXY) == 1) return (TXY)pgm_read_byte(&xy[num][1]);
-            else if (sizeof(TXY) == 2) return (TXY)pgm_read_word(&xy[num][1]);
-            else return (TXY)pgm_read_dword(&xy[num][1]);
-        } else return xy[num][1];
+    TXY Y(uint16_t num) {
+        return approxy::read<TXY, MODE>(&xy[num][1]);
     }
-    TXY (*xy)[2];
+
+    const TXY (*xy)[2];
     const uint16_t _size;
 };
 #endif
